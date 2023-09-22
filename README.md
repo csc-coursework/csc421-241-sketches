@@ -19,7 +19,8 @@ The Java thread implementation is based on a Thread object, that must have a met
 signature (`public void run(void)`). In practice, objects `implement` the `Runnable` interface by providing the run method.
 1. The creator of the thread instantiates an object of Runnable type,
 2. Then calls the `start` method on the object.
-From that point on, the run code is executed in virtual parallelism with the calling thread.
+3. Other calls on the thread can pause, stop or synchronize the thread.
+From the start method call,  the run code is executed in virtual parallelism with the calling thread.
 
 Various structures allow threads to share variables. Object references can be passed during the instantiation of the Thread
 object. In this case, we pack everything into a single class and use Class variables to share data. 
@@ -34,3 +35,15 @@ are synchronous. To have concurrent events, the events must be separate threads.
 The entire art of multi-threaded programming, whether it be on a CPU or on the massive conccurrencty scale of GPU's, is
 how concurrency is handled to achieve efficiency and correctness.
 
+##### The wrong and right Accumulator
+
+The Accumulator is written so that there are three events: two of reading the accumulator
+variable and one writing the accumulation variable. They are all synchronus within each thread,
+but might be concurrent across threads.
+
+Deleteing code line L will make the code concurrent, and as a result the final value of 
+accumulator will be 1. With line L in, and the lock caused by the synchronization block, the code is synchronous, and the final value of the accumulator will be 5.
+
+Note that when synchronized, for events A and B in two different threads, it is not possible
+to know if A&lt;B or B&lt;A. But in this case, this is an unnecessary knowledge. We only 
+need to know that one or the other is true.
