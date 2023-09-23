@@ -1,0 +1,35 @@
+critical race
+[0.0040] reading i
+[0.0040] reading i
+[0.0050] reading i
+[0.0090] reading i
+[0.0010] reading i
+[2.0500] writing i
+[2.0520] thread exits
+[2.0530] writing i
+[2.0530] thread exits
+[2.0480] writing i
+[2.0560] thread exits
+[2.0570] writing i
+[2.0570] thread exits
+[2.0580] writing i
+[2.0580] thread exits
+accumulator = 1
+
+synchronized
+[0.0000] reading i
+[2.1060] writing i
+[2.1150] reading i
+[2.1150] thread exits
+[4.1170] writing i
+[4.1190] reading i
+[4.1190] thread exits
+[6.1660] writing i
+[6.1680] reading i
+[6.1680] thread exits
+[8.1970] writing i
+[8.1990] reading i
+[8.2000] thread exits
+[10.2150] writing i
+[10.2170] thread exits
+accumulator = 5
