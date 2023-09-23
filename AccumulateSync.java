@@ -26,8 +26,7 @@ public class AccumulateSync implements Runnable {
 		       	System.out.println(this.timer_string()+" writing i") ;
 			AccumulateSync.accumulator = i+1 ;
 		}
-		} catch (InterruptedException e) {
-		}
+		} catch (InterruptedException e) { }
 	       	System.out.println(this.timer_string()+" thread exits") ;
 	}
 
@@ -40,8 +39,7 @@ public class AccumulateSync implements Runnable {
 		}
 		try {
 			for (int i = 0; i< 5; i++) threads[i].join() ;
-		} catch (InterruptedException e) {
-		}
+		} catch (InterruptedException e) { }
 		System.out.println("accumulator = " + AccumulateSync.accumulator) ;
     	}
 
