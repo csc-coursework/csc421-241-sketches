@@ -1,4 +1,4 @@
-### Accumulate.java
+### How to Accumulate
 
 This is a java program to illustrate Java Thread programming, and the need for synchronization. 
 
