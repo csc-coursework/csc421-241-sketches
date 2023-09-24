@@ -52,6 +52,11 @@ enter that critical section.
 
 ##### Concurrency in Java
 
+Java uses a [thread object](https://docs.oracle.com/javase/tutorial/essential/concurrency/procthread.html) to
+handle concurrency, and a series of methods that implement a [Mesa Monitor](https://pages.mtu.edu/~shene/NSF-3/e-Book/MONITOR/monitor-types.html)
+to handle the problem of synchronization. We will only use the locking aspect of the
+Monitor, and for this it does not matter the details of the Monitor's type.
+
 The version Accumulate is not safe. It does not assure that five increments 
 of a counter, when started at the value 0, ends with the value of 1. The
 version AccumulateSync is safe. It uses the java `synchronized` block to achieve
@@ -70,7 +75,7 @@ need to know that one or the other is true.
 
 ##### Concurrency in Go
 
-(Go concurrency)[https://go.dev/tour/concurrency/1] uses a different 
+[Go concurrency](https://go.dev/tour/concurrency/1) uses a different 
 principle than Java. Java uses a Monitor, by computer scientists Hoare. Go 
 is based on Communicating Sequential Processes (CSP). There are *channels* that 
 communicate just like pipes.
