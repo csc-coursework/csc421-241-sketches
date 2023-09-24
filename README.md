@@ -35,7 +35,27 @@ are synchronous. To have concurrent events, the events must be separate threads.
 The entire art of multi-threaded programming, whether it be on a CPU or on the massive conccurrencty scale of GPU's, is
 how concurrency is handled to achieve efficiency and correctness.
 
-##### The wrong and right Accumulator
+##### Theoretical Elements of Concurrency.
+
+A collection of possibly concurrent processes is analyzed for three mathematical properties.
+1. *Safety*. This property is also *correctness*. The collection has this 
+property if the constraints are guaranteed satisfied. For instance, that never
+more than one thread is running the critical section
+2. *Liveness*. This property is the opposite of *deadlock*. It can be defined
+as the absence of a situtation where no thread can ever make progress. For instance,
+a trivial way to assure safety is to never allow any thread into the critical section. However
+such a solution might not have the liveness property.
+3. *Fairness*. This property can be difficult to define and assure. It is at least
+the absence of *starvation*. At its weakest, 
+it ensures that any process that is waiting to enter a critical section, will eventually
+enter that critical section.
+
+##### Concurrency in Java
+
+The version Accumulate is not safe. It does not assure that five increments 
+of a counter, when started at the value 0, ends with the value of 1. The
+version AccumulateSync is safe. It uses the java `synchronized` block to achieve
+safety. The solution is also live and fair.
 
 The Accumulator is written so that there are three events: two of reading the accumulator
 variable and one writing the accumulation variable. They are all synchronus within each thread,
@@ -47,3 +67,22 @@ accumulator will be 1. With line L in, and the lock caused by the synchronizatio
 Note that when synchronized, for events A and B in two different threads, it is not possible
 to know if A&lt;B or B&lt;A. But in this case, this is an unnecessary knowledge. We only 
 need to know that one or the other is true.
+
+##### Concurrency in Go
+
+(Go concurrency)[https://go.dev/tour/concurrency/1] uses a different 
+principle than Java. Java uses a Monitor, by computer scientists Hoare. Go 
+is based on Communicating Sequential Processes (CSP). There are *channels* that 
+communicate just like pipes.
+
+This example cheats the paradigm a bit by having CSP emulate a Monitor. In 
+this case we just take a lock from the Monitor structure and that's all we need. 
+There is more to a Monitor but here we do not need that.
+
+Using a pair of
+channels, I emulate in Go a lock with a *token passing model*, where a token
+is passed into on channel by the lock meister, to be claimed by some go routine at the other 
+end of the channel. It then proceeds, and when done, returns the token
+by passing it into the second channel, were it is redeemed by a lock meister.
+There are parallels with the lock meister routine in Go being the lock object in Java.
+
