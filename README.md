@@ -91,3 +91,6 @@ end of the channel. It then proceeds, and when done, returns the token
 by passing it into the second channel, were it is redeemed by a lock meister.
 There are parallels with the lock meister routine in Go being the lock object in Java.
 
+##### References
+
+You might enjoy listening to Rob Pike and his talk [Concurrency is not Parallelism](https://www.youtube.com/watch?v=oV9rvDllKEg).
