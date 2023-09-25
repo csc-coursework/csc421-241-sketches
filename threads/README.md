@@ -110,6 +110,10 @@ end of the channel. It then proceeds, and when done, returns the token
 by passing it into the second channel, were it is redeemed by a lock meister.
 There are parallels with the lock meister routine in Go being the lock object in Java.
 
+The idea of CSP is that locks and problems with locking occur because of shared memory,
+and the communication model would pass the data on, rather than share a data location. 
+This more native version of accumulate is given in the other Go program.
+
 
 ##### Concurrency in C
 
