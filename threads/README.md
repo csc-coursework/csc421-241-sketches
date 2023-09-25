@@ -1,13 +1,12 @@
 ### How to Accumulate
 
-This is a java program to illustrate Java Thread programming, and the need for synchronization. 
 
 Simple programs are single threaded, and reasoning about such programs only need to consider the code
 flow in a single data activity line. A program can branch, loop, have subroutine calls, or exceptions. However,
 the basic notion is a well known flow of instructions, in which it is possible always to answer which instruction
 preceeded and followed any given instruction.
 
-With mutliple threads, two or more code lines are proceeding at the same time, and it might not be possible to
+With mutliple threads, two or more code lines are proceeding independently, and it might not be possible to
 establish between the threads a necessary time ordering. If the threads share data, it might not be possible to
 establish the order in which the threads operate on the data. Accumulate is an example which shows that such 
 indeterminancy will affect the outcome of the program. 
@@ -15,15 +14,12 @@ indeterminancy will affect the outcome of the program.
 
 ##### Threads
 
-The Java thread implementation is based on a Thread object, that must have a method called `run` of the proper
-signature (`public void run(void)`). In practice, objects `implement` the `Runnable` interface by providing the run method.
-1. The creator of the thread instantiates an object of Runnable type,
-2. Then calls the `start` method on the object.
-3. Other calls on the thread can pause, stop or synchronize the thread.
-From the start method call,  the run code is executed in virtual parallelism with the calling thread.
+There are both *hardware threads* and *software threads*. A hardware thread is the physical ability 
+of the CPU to follow a stream of instructions. A hardware that supports multiple threads, supports
+*parallelism*. A software thread is a routine, a bit of code that operates sequentially. A software
+thread needs a hardware thread to execute; but having multiple software thread implies *concurrency*, which 
+is different that parallelism.
 
-Various structures allow threads to share variables. Object references can be passed during the instantiation of the Thread
-object. In this case, we pack everything into a single class and use Class variables to share data. 
 
 ##### Synchronization and Concurrency.
 
@@ -57,21 +53,44 @@ handle concurrency, and a series of methods that implement a [Mesa Monitor](http
 to handle the problem of synchronization. We will only use the locking aspect of the
 Monitor, and for this it does not matter the details of the Monitor's type.
 
-The version Accumulate is not safe. It does not assure that five increments 
-of a counter, when started at the value 0, ends with the value of 1. The
-version AccumulateSync is safe. It uses the java `synchronized` block to achieve
-safety. The solution is also live and fair.
+The Java thread implementation is based on a Thread object, that must have a method called `run` of the proper
+signature (`public void run(void)`). In practice, objects `implement` the `Runnable` interface by providing the run method.
+1. The creator of the thread instantiates an object of Runnable type,
+2. Then calls the `start` method on the object.
+3. Other calls on the thread can pause, stop or synchronize the thread.
+From the start method call,  the run code is executed in virtual parallelism with the calling thread.
 
-The Accumulator is written so that there are three events: two of reading the accumulator
-variable and one writing the accumulation variable. They are all synchronus within each thread,
-but might be concurrent across threads.
+Various structures allow threads to share variables. Object references can be passed during 
+the instantiation of the Thread
+object. In this case, we pack everything into a single class and use Class variables to share data. 
 
-Deleteing code line L will make the code concurrent, and as a result the final value of 
-accumulator will be 1. With line L in, and the lock caused by the synchronization block, the code is synchronous, and the final value of the accumulator will be 5.
+One version of Accumulate is not safe. It does not assure that five increments 
+of a counter, when started at the value 0, ends with the value of 1. 
+Its lack of safety is deliberate, to illustrate how one must
+consider concurrency. 
 
-Note that when synchronized, for events A and B in two different threads, it is not possible
-to know if A&lt;B or B&lt;A. But in this case, this is an unnecessary knowledge. We only 
-need to know that one or the other is true.
+A second version AccumulateSync uses the java `synchronized` block to achieve
+safety. This solution is also live and fair. The synchronized block introduces the concurrency tool
+of the lock. In the abstract language of a high level programming language, a lock is a software
+entity that can be *acquired*, *held*, and *released*, with the safety property that at any moment, 
+only one thread can hold the lock. The the lock is held, another thread attempting the acquire the
+lock will block until the lock is released.
+
+In Java, every object has a lock. The synchronized code new an object simply for its lock. 
+Before the Accumulator code operates on the accumulation variable, it acquires the lock, and holds
+the lock until it has completed the sequence of instructions that reason over the values
+of accumulation variable.
+
+A feature of Java is that the lock is asserted for a block, and released at the end of the block.
+The Java languages enforces a paradigm that safety is achieved if sequences of instructions are
+*transactions*, run all or nothing, in isolation datawise from any other thread. 
+
+There is a subtle but important notion in this code. The lock at various times by various threads.
+What we do not know is the order in which the threads hold the lock. This is not possible and not 
+necessary. What the lock assures is that there is some order in which the lock is held, and in that
+order, all of the instructions on one thread are executed before any of the instructions of the 
+other thread are executed.
+
 
 ##### Concurrency in Go
 
