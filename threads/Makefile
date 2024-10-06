@@ -4,7 +4,7 @@
 AA= Accumulate
 AS= AccumulateSync
 
-all:
+java:
 	@echo "critical race"
 	javac ${AA}.java 
 	java ${AA}
