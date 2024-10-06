@@ -14,5 +14,16 @@ java:
 	java ${AS}
 	make clean
 
+go:
+	go run go-accumulate.go
+	go run go-native-accumulate.go
+
+c:
+	cc -o accumulate accumulate.c -lpthread
+	./accumulate
+
+install-go:
+	sudo apt  install golang-go
+
 clean:
-	-rm *.class
+	-rm *.class accumulate
