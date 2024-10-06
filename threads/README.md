@@ -91,6 +91,49 @@ necessary. What the lock assures is that there is some order in which the lock i
 order, all of the instructions on one thread are executed before any of the instructions of the 
 other thread are executed.
 
+<pre>
+make[1]: Entering directory '/home/ubuntu/csc421/csc421-241-sketches/threads'
+critical race
+javac Accumulate.java 
+java Accumulate
+[0.0040] reading i
+[0.0050] reading i
+[0.0030] reading i
+[0.0000] reading i
+[0.0090] reading i
+[2.0680] writing i
+[2.0710] thread exits
+[2.0740] writing i
+[2.0730] writing i
+[2.0760] thread exits
+[2.0730] writing i
+[2.0780] thread exits
+[2.0720] writing i
+[2.0780] thread exits
+[2.0790] thread exits
+accumulator = 1
+
+synchronized
+javac AccumulateSync.java
+java AccumulateSync
+[0.0000] reading i
+[2.0900] writing i
+[2.1010] reading i
+[2.1010] thread exits
+[4.1100] writing i
+[4.1110] reading i
+[4.1120] thread exits
+[6.1850] writing i
+[6.1860] reading i
+[6.1870] thread exits
+[8.1870] writing i
+[8.1880] reading i
+[8.1900] thread exits
+[10.2610] writing i
+[10.2630] thread exits
+accumulator = 5
+make[1]: Leaving directory '/home/ubuntu/csc421/csc421-241-sketches/threads'
+</pre>
 
 ##### Concurrency in Go
 

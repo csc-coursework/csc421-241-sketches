@@ -12,7 +12,10 @@ java:
 	@echo "synchronized" 
 	javac ${AS}.java
 	java ${AS}
-	make clean
+
+java-capture:
+	@echo building out file ...
+	make java > accumulate.out
 
 go:
 	go run go-accumulate.go
@@ -23,7 +26,7 @@ c:
 	./accumulate
 
 install-go:
-	sudo apt  install golang-go
+	sudo apt install golang-go
 
 clean:
-	-rm *.class accumulate
+	-rm *.class accumulate accumulate.out
