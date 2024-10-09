@@ -21,8 +21,10 @@ func main() {
 	}
 	passing <- 0 
 	for i := 0; i < 5; i++ {
+		// the write to the completion channel blocks
+		// until there is an accumulator to read the channel
 		<- completion
-		fmt.Println("go thread completes")
+		fmt.Println("an accumulator thread wrote to the completion channel")
 	}
 	// note that accumlator reads passing before writing completion
 	// therefore this read of passing will be the final write to passing
