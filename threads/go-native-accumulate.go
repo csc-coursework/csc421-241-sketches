@@ -22,7 +22,10 @@ func main() {
 	passing <- 0 
 	for i := 0; i < 5; i++ {
 		<- completion
+		fmt.Println("go thread completes")
 	}
+	// note that accumlator reads passing before writing completion
+	// therefore this read of passing will be the final write to passing
 	accumulate := <- passing
 	fmt.Println("final accumulate value:", accumulate)
 }
