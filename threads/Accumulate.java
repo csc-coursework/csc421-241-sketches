@@ -18,13 +18,13 @@ public class Accumulate implements Runnable {
 	public void run() {
 		int i ; 
 		try {
-		       	System.out.println(this.timer_string()+" reading i") ;
+		    System.out.println(this.timer_string()+" reading i") ;
 			i = Accumulate.accumulator ;
 			Thread.sleep(2000) ;
-		       	System.out.println(this.timer_string()+" writing i") ;
+		    System.out.println(this.timer_string()+" writing i") ;
 			Accumulate.accumulator = i+1 ;
 		} catch (InterruptedException e) { }
-	       	System.out.println(this.timer_string()+" thread exits") ;
+	    System.out.println(this.timer_string()+" thread exits") ;
 	}
 
 
