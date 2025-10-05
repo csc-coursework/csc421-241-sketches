@@ -1,5 +1,20 @@
 package main
 
+/*
+ * name: hello.go
+ * last-update:
+ *    4 oct 2025 -bjr: created
+ *
+ * two sample runs:
+ *
+ * % make hello
+ * go run hello.go
+ * ollhe
+ * % make hello
+ * go run hello.go
+ * ohlel
+ */
+
 import (
 	"fmt"
 	"time"
