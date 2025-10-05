@@ -36,7 +36,7 @@ func rv_a(ch chan int) {
 
 func rv_b(ch chan int) {
 	b_g = 5
-	ch <- 1 // send on the channel, in Go syntax, is a statement
+	ch <- 1 // send on the channel, in Go syntax, this is a statement
 	// rendez-vous'ed
 	fmt.Printf("rv_b: a_g = %d, b_g = %d\n", a_g, b_g)
 }
