@@ -1,6 +1,5 @@
 
 
-
 AA= Accumulate
 AS= AccumulateSync
 
@@ -27,6 +26,9 @@ c:
 
 hello:
 	go run hello.go
+
+rendez-vous:
+	go run rendez-vous.go
 
 install-go:
 	sudo apt install golang-go
