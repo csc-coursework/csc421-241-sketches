@@ -25,8 +25,12 @@ c:
 	cc -o accumulate accumulate.c -lpthread
 	./accumulate
 
+hello:
+	go run hello.go
+
 install-go:
 	sudo apt install golang-go
+	# brew update ; brew install go 
 
 clean:
 	-rm *.class accumulate accumulate.out
