@@ -9,12 +9,12 @@ package main
  *
  * % make rendez-vous
  * go run rendez-vous.go
- * rv_a: a_g = 3, b_g = 5
+ * rv_a: a_g = 3, b_g = 5, i = 1
  * rv_b: a_g = 3, b_g = 5
  * % make rendez-vous
  * go run rendez-vous.go
  * rv_b: a_g = 3, b_g = 5
- * rv_a: a_g = 3, b_g = 5
+ * rv_a: a_g = 3, b_g = 5, i = 1
  *
  */
 
@@ -29,14 +29,14 @@ var b_g int = 0
 
 func rv_a(ch chan int) {
 	a_g = 3
-	<- ch
+	i := <- ch // receive on the channel, in Go syntax, this is an operator
 	// rendez-vous'ed
-	fmt.Printf("rv_a: a_g = %d, b_g = %d\n", a_g, b_g)
+	fmt.Printf("rv_a: a_g = %d, b_g = %d, i = %d\n", a_g, b_g, i)
 }
 
 func rv_b(ch chan int) {
 	b_g = 5
-	ch <- 1
+	ch <- 1 // send on the channel, in Go syntax, is a statement
 	// rendez-vous'ed
 	fmt.Printf("rv_b: a_g = %d, b_g = %d\n", a_g, b_g)
 }
