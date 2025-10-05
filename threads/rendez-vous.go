@@ -42,7 +42,7 @@ func rv_b(ch chan int) {
 }
 
 func main () {
-	ch := make(chan int)
+	ch := make(chan int) // unbuffered channel - this will block until the rendez-vous
 	go rv_a(ch)
 	go rv_b(ch)
 	time.Sleep(time.Second)
