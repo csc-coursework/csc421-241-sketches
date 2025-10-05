@@ -11,7 +11,7 @@ func f(s string) {
 
 func main() {
 	hello := [5]string{"h","e","l","l","o"}
-	i := 0 // := to define i, infering type
+	i := 0 // := to define i, inferring type
 	for i<len(hello) {    // or: i=0; i<5; i+=1 (no parens)
 		go f(hello[i])
 		i = i+1 // i updated, not defined
