@@ -70,6 +70,7 @@ Once again, the program uses lots of static variables, which is not a proper pro
 style, because while it makes things the simplest for small programs, it becomes
 a hazard with large programs. And any useful program will become large.
 
+
 ##### Concurrency in Go
 
 [Go concurrency](https://go.dev/tour/concurrency/1) uses a different
@@ -78,25 +79,21 @@ C. A. R. Hoare and Per Brinch Hansen. Go is based on Communicating
 Sequential Processes (CSP). There are *channels* that communicate much
 like pipes.
 
-This example cheats the paradigm a bit by having CSP emulate a monitor.
-In this case we just take a lock from the monitor structure, and that's all
-we need. There is more to a monitor, but here we do not need that.
+The program `go-unsynced-accumulate.go` reiterates for us the problem of
+unsynchronized access to common data. I provide two solutions.
 
-Using a pair of channels, I emulate in Go a lock with a *token-passing model*.
-A token is passed into one channel by the lock meister, to be claimed by some
-goroutine at the other end of the channel. It then proceeds, and when done,
-returns the token by passing it into the second channel, where it is redeemed
-by the lock meister. There are parallels with the lock meister routine in Go
-being the lock object in Java.
+The solution `go-mutex-accumulate.go` creates a mutex out of the
+`lock` channel. It is initialized with a single element of content. To
+take the lock, the channel is read. Now the channel is empty, so any
+other read blocks. To release the lock, an element is returned to the
+channel.
 
-The idea of CSP is that shared state need not be shared memory. Instead,
-processes communicate by passing data between them. This avoids the need
-for the locking that arises when multiple processes directly access the
-same mutable data location.
+In that program, to keep track of when the goroutines are done, they also
+write into a `completion` channel.
 
-This more native version of `accumulate` is given in the other Go program.
-
-
+A more native version is `go-csp-accumulate.go`. This follows the CSP
+paradigm, where the `passing` channel passes the current value of
+`accumulate` from one goroutine to another.
 
 
 ##### Concurrency in Java
