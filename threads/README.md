@@ -70,6 +70,38 @@ Once again, the program uses lots of static variables, which is not a proper pro
 style, because while it makes things the simplest for small programs, it becomes
 a hazard with large programs. And any useful program will become large.
 
+```
+% make c
+accumulate in c: no mutex
+cc -o accumulate accumulate.c -lpthread
+./accumulate
+thread sleeps
+thread sleeps
+thread sleeps
+thread sleeps
+thread sleeps
+thread exits
+thread exits
+thread exits
+thread exits
+thread exits
+the final value of accumulator is 1
+
+accumulate in c: with mutex
+cc -DUSE_MUTEX -o accumulate accumulate.c -lpthread
+./accumulate
+thread sleeps
+thread exits
+thread sleeps
+thread exits
+thread sleeps
+thread exits
+thread sleeps
+thread exits
+thread sleeps
+thread exits
+the final value of accumulator is 5
+```
 
 ##### Concurrency in Go
 

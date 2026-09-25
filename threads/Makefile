@@ -27,7 +27,12 @@ go:
 	go run go-mutex-accumulate.go
 
 c:
+	@echo "accumulate in c: no mutex"
 	cc -o accumulate accumulate.c -lpthread
+	./accumulate
+	@echo
+	@echo "accumulate in c: with mutex"
+	cc -DUSE_MUTEX -o accumulate accumulate.c -lpthread
 	./accumulate
 
 hello:
