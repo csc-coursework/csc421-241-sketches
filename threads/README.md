@@ -46,6 +46,55 @@ the absence of *starvation*. At its weakest,
 it ensures that any process that is waiting to enter a critical section, will eventually
 enter that critical section.
 
+
+
+
+##### Concurrency in C
+
+It is an abuse of words to say concurrency in C because the C use of 
+threads and synchronization is not part of the language, where as for Java
+and Go it is. However, neither is `malloc` part of C language, nor `printf`. There
+are library routine written in C, dealing intimately with a particular operating system,
+that becomes C through convention and tradition.
+
+Threads can be implemented using the [`Pthreads`](https://hpc-tutorials.llnl.gov/posix/) library,
+were `P` stands for POSIX, a Portable Unix. The program demonstrates just three 
+Pthread calls,
+1. `pthread_create` to create and start a thread;
+2. `pthread_mutex` (actually `pthread_mutex_lock` and `pthread_mutex_unlock`) to create
+a lock as was attached to the lock object in Java,
+3. `pthread_join` to wait for a thread to exit, so that the main program
+can proceed.
+
+Once again, the program uses lots of static variables, which is not a proper programming
+style, because while it makes things the simplest for small programs, it becomes
+a hazard with large programs. And any useful program will become large.
+
+
+##### Concurrency in Go
+
+[Go concurrency](https://go.dev/tour/concurrency/1) uses a different 
+principle than Java. Java uses a Monitor, by computer scientists Hoare. Go 
+is based on Communicating Sequential Processes (CSP). There are *channels* that 
+communicate just like pipes.
+
+This example cheats the paradigm a bit by having CSP emulate a Monitor. In 
+this case we just take a lock from the Monitor structure and that's all we need. 
+There is more to a Monitor but here we do not need that.
+
+Using a pair of
+channels, I emulate in Go a lock with a *token passing model*, where a token
+is passed into on channel by the lock meister, to be claimed by some go routine at the other 
+end of the channel. It then proceeds, and when done, returns the token
+by passing it into the second channel, were it is redeemed by a lock meister.
+There are parallels with the lock meister routine in Go being the lock object in Java.
+
+The idea of CSP is that locks and problems with locking occur because of shared memory,
+and the communication model would pass the data on, rather than share a data location. 
+This more native version of accumulate is given in the other Go program.
+
+
+
 ##### Concurrency in Java
 
 Java uses a [thread object](https://docs.oracle.com/javase/tutorial/essential/concurrency/procthread.html) to
@@ -134,52 +183,6 @@ java AccumulateSync
 accumulator = 5
 make[1]: Leaving directory '/home/ubuntu/csc421/csc421-241-sketches/threads'
 </pre>
-
-##### Concurrency in Go
-
-[Go concurrency](https://go.dev/tour/concurrency/1) uses a different 
-principle than Java. Java uses a Monitor, by computer scientists Hoare. Go 
-is based on Communicating Sequential Processes (CSP). There are *channels* that 
-communicate just like pipes.
-
-This example cheats the paradigm a bit by having CSP emulate a Monitor. In 
-this case we just take a lock from the Monitor structure and that's all we need. 
-There is more to a Monitor but here we do not need that.
-
-Using a pair of
-channels, I emulate in Go a lock with a *token passing model*, where a token
-is passed into on channel by the lock meister, to be claimed by some go routine at the other 
-end of the channel. It then proceeds, and when done, returns the token
-by passing it into the second channel, were it is redeemed by a lock meister.
-There are parallels with the lock meister routine in Go being the lock object in Java.
-
-The idea of CSP is that locks and problems with locking occur because of shared memory,
-and the communication model would pass the data on, rather than share a data location. 
-This more native version of accumulate is given in the other Go program.
-
-
-##### Concurrency in C
-
-It is an abuse of words to say concurrency in C because the C use of 
-threads and synchronization is not part of the language, where as for Java
-and Go it is. However, neither is `malloc` part of C language, nor `printf`. There
-are library routine written in C, dealing intimately with a particular operating system,
-that becomes C through convention and tradition.
-
-Threads can be implemented using the [`Pthreads`](https://hpc-tutorials.llnl.gov/posix/) library,
-were `P` stands for POSIX, a Portable Unix. The program demonstrates just three 
-Pthread calls,
-1. `pthread_create` to create and start a thread;
-2. `pthread_mutex` (actually `pthread_mutex_lock` and `pthread_mutex_unlock`) to create
-a lock as was attached to the lock object in Java,
-3. `pthread_join` to wait for a thread to exit, so that the main program
-can proceed.
-
-Once again, the program uses lots of static variables, which is not a proper programming
-style, because while it makes things the simplest for small programs, it becomes
-a hazard with large programs. And any useful program will become large.
-
-
 
 ##### References
 
