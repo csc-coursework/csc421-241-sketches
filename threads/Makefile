@@ -17,12 +17,14 @@ java-capture:
 	make java > accumulate.out
 
 go:
-	@echo "go-native-accumulate"
-	go run go-native-accumulate.go
-	@echo "go-accumulate"
-	go run go-accumulate.go
-	@echo "go-accumulate-mutex"
-	go run go-accumulate-mutex.go
+	@echo "go-unsynced-accumulate"
+	go run go-unsynced-accumulate.go
+	@echo
+	@echo "go-csp-accumulate"
+	go run go-csp-accumulate.go
+	@echo
+	@echo "go-mutex-accumulate"
+	go run go-mutex-accumulate.go
 
 c:
 	cc -o accumulate accumulate.c -lpthread

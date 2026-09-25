@@ -1,3 +1,13 @@
+//
+// go-csp-accumulate.go
+// a critical race between go-routines
+// last-update:
+//		24 sep 2023 -bjr; initial version
+//		25 sep 2026 -bjr; from a previous existing program
+//
+//
+
+
 package main
 
 import (

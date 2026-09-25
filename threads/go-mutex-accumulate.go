@@ -1,3 +1,12 @@
+//
+// go-mutex-accumulate.go
+// a critical race between go-routines
+// last-update:
+//		25 sep 2026 -bjr; created
+//
+//
+
+
 package main
 
 import (
@@ -9,25 +18,30 @@ var accumulate int = 0
 
 func accumulator(lock chan int, done chan int) {
 	<-lock
+	var i = accumulate 
 	fmt.Println("thread sleeping on lock")
 	time.Sleep(time.Second)
-	accumulate += 1
+	accumulate = i+1
 	lock <- 1
-	done <- 1 
+	completion <- 1 
 }
 
 func main() {
-	done := make(chan int)
+	completion := make(chan int)
 	lock := make(chan int, 1)
+	// channel capacity of 1 lets me go on after this statement
 	lock <- 1
 	
 	for i := 0; i < 5; i++ {
-		go accumulator(lock, done)
+		go accumulator(lock, completion)
 	}
 	
 	for i := 0; i < 5; i++ {
-		<-done
-		fmt.Println("received done ", i)
+		// the write to the completion channel blocks
+		// until there is an accumulator to read the channel
+		<-completion
+		fmt.Println("an accumulator thread wrote to the completion channel")
 	}
+
 	fmt.Println("final accumulate value:", accumulate)
 }
