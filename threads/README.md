@@ -47,51 +47,55 @@ it ensures that any process that is waiting to enter a critical section, will ev
 enter that critical section.
 
 
-
-
 ##### Concurrency in C
 
-It is an abuse of words to say concurrency in C because the C use of 
-threads and synchronization is not part of the language, where as for Java
-and Go it is. However, neither is `malloc` part of C language, nor `printf`. There
-are library routine written in C, dealing intimately with a particular operating system,
-that becomes C through convention and tradition.
+
+It is an abuse of words to say *concurrency in C* because the C use of
+threads and synchronization is not part of the language, whereas for Java
+and Go it is. However, neither is `malloc` part of the C language, nor
+`printf`. There are library routines, written in C and dealing intimately
+with a particular operating system, that become C through convention and
+tradition.
 
 Threads can be implemented using the [`Pthreads`](https://hpc-tutorials.llnl.gov/posix/) library,
-were `P` stands for POSIX, a Portable Unix. The program demonstrates just three 
-Pthread calls,
+where `P` stands for POSIX, a Portable Operating System Interface.
+The program demonstrates just three Pthread operations,
+
 1. `pthread_create` to create and start a thread;
-2. `pthread_mutex` (actually `pthread_mutex_lock` and `pthread_mutex_unlock`) to create
-a lock as was attached to the lock object in Java,
-3. `pthread_join` to wait for a thread to exit, so that the main program
-can proceed.
+2. `pthread_mutex_lock` and `pthread_mutex_unlock` to acquire and release a
+   mutex, attached to the lock object as in Java;
+3. `pthread_join` to wait for a thread to exit, so that the main program can proceed.
 
 Once again, the program uses lots of static variables, which is not a proper programming
 style, because while it makes things the simplest for small programs, it becomes
 a hazard with large programs. And any useful program will become large.
 
-
 ##### Concurrency in Go
 
-[Go concurrency](https://go.dev/tour/concurrency/1) uses a different 
-principle than Java. Java uses a Monitor, by computer scientists Hoare. Go 
-is based on Communicating Sequential Processes (CSP). There are *channels* that 
-communicate just like pipes.
+[Go concurrency](https://go.dev/tour/concurrency/1) uses a different
+principle than Java. Java uses monitors, developed independently by
+C. A. R. Hoare and Per Brinch Hansen. Go is based on Communicating
+Sequential Processes (CSP). There are *channels* that communicate much
+like pipes.
 
-This example cheats the paradigm a bit by having CSP emulate a Monitor. In 
-this case we just take a lock from the Monitor structure and that's all we need. 
-There is more to a Monitor but here we do not need that.
+This example cheats the paradigm a bit by having CSP emulate a monitor.
+In this case we just take a lock from the monitor structure, and that's all
+we need. There is more to a monitor, but here we do not need that.
 
-Using a pair of
-channels, I emulate in Go a lock with a *token passing model*, where a token
-is passed into on channel by the lock meister, to be claimed by some go routine at the other 
-end of the channel. It then proceeds, and when done, returns the token
-by passing it into the second channel, were it is redeemed by a lock meister.
-There are parallels with the lock meister routine in Go being the lock object in Java.
+Using a pair of channels, I emulate in Go a lock with a *token-passing model*.
+A token is passed into one channel by the lock meister, to be claimed by some
+goroutine at the other end of the channel. It then proceeds, and when done,
+returns the token by passing it into the second channel, where it is redeemed
+by the lock meister. There are parallels with the lock meister routine in Go
+being the lock object in Java.
 
-The idea of CSP is that locks and problems with locking occur because of shared memory,
-and the communication model would pass the data on, rather than share a data location. 
-This more native version of accumulate is given in the other Go program.
+The idea of CSP is that shared state need not be shared memory. Instead,
+processes communicate by passing data between them. This avoids the need
+for the locking that arises when multiple processes directly access the
+same mutable data location.
+
+This more native version of `accumulate` is given in the other Go program.
+
 
 
 
