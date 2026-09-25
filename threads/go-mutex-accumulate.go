@@ -16,9 +16,9 @@ import (
 
 var accumulate int = 0
 
-func accumulator(lock chan int, done chan int) {
+func accumulator(lock chan int, completion chan int) {
 	<-lock
-	var i = accumulate 
+	i := accumulate 
 	fmt.Println("thread sleeping on lock")
 	time.Sleep(time.Second)
 	accumulate = i+1

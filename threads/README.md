@@ -95,6 +95,51 @@ A more native version is `go-csp-accumulate.go`. This follows the CSP
 paradigm, where the `passing` channel passes the current value of
 `accumulate` from one goroutine to another.
 
+```
+% make go
+go-unsynced-accumulate
+go run go-unsynced-accumulate.go
+thread sleeping on lock
+thread sleeping on lock
+thread sleeping on lock
+thread sleeping on lock
+thread sleeping on lock
+thread completing
+thread completing
+thread completing
+thread completing
+thread completing
+final accumulate value: 1
+
+go-csp-accumulate
+go run go-csp-accumulate.go
+thread sleeping 0
+an accumulator thread wrote to the completion channel
+thread sleeping 1
+thread sleeping 2
+an accumulator thread wrote to the completion channel
+an accumulator thread wrote to the completion channel
+thread sleeping 3
+thread sleeping 4
+an accumulator thread wrote to the completion channel
+an accumulator thread wrote to the completion channel
+final accumulate value: 5
+
+go-mutex-accumulate
+go run go-mutex-accumulate.go
+thread sleeping on lock
+thread sleeping on lock
+an accumulator thread wrote to the completion channel
+an accumulator thread wrote to the completion channel
+thread sleeping on lock
+thread sleeping on lock
+an accumulator thread wrote to the completion channel
+an accumulator thread wrote to the completion channel
+thread sleeping on lock
+an accumulator thread wrote to the completion channel
+final accumulate value: 5
+
+```
 
 ##### Concurrency in Java
 
